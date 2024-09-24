@@ -52,7 +52,11 @@
   _.each = function (collection, iterator) {
     if (Array.isArray(collection)) {
       for (var i = 0; i < collection.length; i++) {
-        iterator(collection[i]);
+        iterator(collection[i], i, collection);
+      }
+    } else {
+      for (const key in collection) {
+        iterator(collection[key], key, collection);
       }
     }
   };
@@ -63,7 +67,7 @@
     // TIP: Here's an example of a function that needs to iterate, which we've
     // implemented for you. Instead of using a standard `for` loop, though,
     // it uses the iteration helper `each`, which you will need to write.
-    var result = -1;
+    let result = -1;
 
     _.each(array, function (item, index) {
       if (item === target && result === -1) {
@@ -75,16 +79,46 @@
   };
 
   // Return all elements of an array that pass a truth test.
-  _.filter = function (collection, test) {};
+  _.filter = function (collection, test) {
+    const filtered = [];
+    for (let i = 0; i < collection.length; i++) {
+      if (Boolean(test(collection[i]))) {
+        filtered.push(collection[i]);
+      }
+    }
+    return filtered;
+  };
 
   // Return all elements of an array that don't pass a truth test.
   _.reject = function (collection, test) {
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
+    return _.filter(collection, (itm) => !Boolean(test(itm)));
   };
 
   // Produce a duplicate-free version of the array.
-  _.uniq = function (array) {};
+  _.uniq = function (array) {
+    if (!Array.isArray(array)) {
+      console.warn("Input is not an array. Returning an empty array.");
+      return [];
+    }
+
+    /* Creates an object with no prototype,
+     * which is slightly more efficient for property lookups than a regular object literal.
+     */
+    const seen = Object.create(null);
+    const uniques = [];
+
+    // A standard for loop is generally faster than forEach in most JavaScript engines.
+    for (let i = 0; i < array.length; i++) {
+      const element = array[i];
+      if (!(element in seen)) {
+        seen[element] = true;
+        uniques.push(element);
+      }
+    }
+    return uniques;
+  };
 
   // Return the results of applying an iterator to each element.
   _.map = function (collection, iterator) {
