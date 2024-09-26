@@ -80,13 +80,13 @@
 
   // Return all elements of an array that pass a truth test.
   _.filter = function (collection, test) {
-    const filtered = [];
+    const results = [];
     _.each(collection, function (item) {
       if (test(item)) {
-        filtered.push(item);
+        results.push(item);
       }
     });
-    return filtered;
+    return results;
   };
 
   // Return all elements of an array that don't pass a truth test.
@@ -125,6 +125,11 @@
     // map() is a useful primitive iteration function that works a lot
     // like each(), but in addition to running the operation on all
     // the members, it also maintains an array of results.
+    const results = [];
+    _.each(collection, function (item) {
+      results.push(iterator(item));
+    });
+    return results;
   };
 
   /*
@@ -165,7 +170,16 @@
   //     return total + number * number;
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
-  _.reduce = function (collection, iterator, accumulator) {};
+  _.reduce = function (collection, iterator, accumulator) {
+    _.each(collection, function (item) {
+      if(accumulator === undefined) {
+        accumulator = item;
+      } else {
+        accumulator = iterator(accumulator, item);
+      }
+    });
+    return accumulator;
+  };
 
   // Determine if the array or object contains a given value (using `===`).
   _.contains = function (collection, target) {
