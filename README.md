@@ -53,10 +53,10 @@ the following functions (*italicized functions* are solved for you). Implement
 each of the functions by making all of the tests pass:
 
 #### Part I:
-- [ ] identity
-- [ ] *first*
-- [ ] last
-- [ ] each
+- [x] identity
+- [x] *first*
+- [x] last
+- [x] each
 - [ ] *indexOf*
 - [ ] filter
 - [ ] reject
